@@ -24,6 +24,7 @@ namespace TownOfUs.CrewmateRoles.HaunterMod
 
                 if (haunter.ImpArrows.Count <= 0 && PlayerControl.LocalPlayer.Is(RoleEnum.Traitor)) // Fix Arrow for traitor
                 {
+                    haunter.Revealed = true;
                     var gameObj = new GameObject();
                     var arrow = gameObj.AddComponent<ArrowBehaviour>();
                     gameObj.transform.parent = PlayerControl.LocalPlayer.gameObject.transform;
