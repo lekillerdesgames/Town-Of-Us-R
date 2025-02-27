@@ -1127,8 +1127,6 @@ namespace TownOfUs
             }
 
             yield return new WaitForSeconds(waitfor);
-            var system = ShipStatus.Instance.Systems[SystemTypes.Sabotage].Cast<SabotageSystemType>();
-            var sabActive = system.AnyActive;
 
             if (HudManager.InstanceExists && HudManager.Instance.FullScreen)
             {
@@ -1136,7 +1134,7 @@ namespace TownOfUs
                 if (fullscreen.color.Equals(color))
                 {
                     fullscreen.color = new Color(1f, 0f, 0f, 0.37254903f);
-                    if (!sabActive) fullscreen.enabled = false;
+                    fullscreen.gameObject.SetActive(false);
                 }
             }
         }
