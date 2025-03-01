@@ -1117,24 +1117,35 @@ namespace TownOfUs
 
         public static IEnumerator FlashCoroutine(Color color, float waitfor = 1f, float alpha = 0.3f)
         {
-            color.a = alpha;
-            if (HudManager.InstanceExists && HudManager.Instance.FullScreen)
+            var startTime = DateTime.UtcNow;
+            while (true)
             {
-                var fullscreen = DestroyableSingleton<HudManager>.Instance.FullScreen;
-                fullscreen.enabled = true;
-                fullscreen.gameObject.active = true;
-                fullscreen.color = color;
-            }
-
-            yield return new WaitForSeconds(waitfor);
-
-            if (HudManager.InstanceExists && HudManager.Instance.FullScreen)
-            {
-                var fullscreen = DestroyableSingleton<HudManager>.Instance.FullScreen;
-                if (fullscreen.color.Equals(color))
+                var now = DateTime.UtcNow;
+                var seconds = (now - startTime).TotalSeconds;
+                if (seconds < waitfor)
                 {
-                    fullscreen.color = new Color(1f, 0f, 0f, 0.37254903f);
-                    fullscreen.gameObject.SetActive(false);
+                    color.a = alpha;
+                    if (HudManager.InstanceExists && HudManager.Instance.FullScreen)
+                    {
+                        var fullscreen = DestroyableSingleton<HudManager>.Instance.FullScreen;
+                        fullscreen.enabled = true;
+                        fullscreen.gameObject.active = true;
+                        fullscreen.color = color;
+                    }
+                    yield return null;
+                }
+                else
+                {
+                    if (HudManager.InstanceExists && HudManager.Instance.FullScreen)
+                    {
+                        var fullscreen = DestroyableSingleton<HudManager>.Instance.FullScreen;
+                        if (fullscreen.color.Equals(color))
+                        {
+                            fullscreen.color = new Color(1f, 0f, 0f, 0.37254903f);
+                            fullscreen.gameObject.SetActive(false);
+                        }
+                    }
+                    yield break;
                 }
             }
         }
